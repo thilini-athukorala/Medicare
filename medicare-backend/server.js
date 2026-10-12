@@ -1,4 +1,7 @@
 require('dotenv').config();
+const dns = require('dns');
+dns.setServers(['8.8.8.8', '8.8.4.4']); // fixes MongoDB SRV lookup failures on some Windows/network setups
+
 const express = require('express');
 const cors = require('cors');
 const connectDB = require('./config/db');
@@ -6,6 +9,7 @@ const connectDB = require('./config/db');
 const authRoutes = require('./routes/authRoutes');
 const doctorRoutes = require('./routes/doctorRoutes');
 const appointmentRoutes = require('./routes/appointmentRoutes');
+const statsRoutes = require('./routes/statsRoutes');
 
 const app = express();
 
@@ -25,6 +29,7 @@ app.get('/', (req, res) => {
 app.use('/api/auth', authRoutes);
 app.use('/api/doctors', doctorRoutes);
 app.use('/api/appointments', appointmentRoutes);
+app.use('/api/stats', statsRoutes);
 
 // 404 handler
 app.use((req, res) => {
@@ -33,6 +38,9 @@ app.use((req, res) => {
 
 // Global error handler (catches any thrown errors)
 app.use((err, req, res, next) => {
+  if (err.type === 'entity.parse.failed') {
+    return res.status(400).json({ message: 'Invalid JSON in request body' });
+  }
   console.error(err.stack);
   res.status(500).json({ message: 'Something went wrong on the server' });
 });

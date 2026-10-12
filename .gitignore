@@ -1,2 +1,20 @@
 node_modules/
 .env
+# Dependencies
+node_modules/
+
+# Environment variables and secrets
+.env
+.env.*
+!.env.example
+
+# Build files
+dist/
+
+# Temporary frontend folders
+medicare-frontend/medicare-frontend-src (6)/
+medicare-frontend/src-old/
+medicare-frontend - Copy/
+
+# Logs
+*.log
