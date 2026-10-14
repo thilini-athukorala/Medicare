@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 
 export default function Navbar() {
@@ -49,15 +49,18 @@ export default function Navbar() {
 
         <div className={`nav-links ${open ? 'nav-links-open' : ''}`}>
           {links.map((l) => (
-            <Link key={l.to} to={l.to} className="nav-pill" onClick={() => setOpen(false)}>
+            <NavLink key={l.to} to={l.to} className={({ isActive }) => `nav-pill ${isActive ? 'active' : ''}`} onClick={() => setOpen(false)}>
               {l.label}
-            </Link>
+            </NavLink>
           ))}
         </div>
 
         <div className="navbar-actions">
-          <span className="user-pill">{user?.name} · {user?.role}</span>
-          <button className="btn-logout" onClick={handleLogout}>Logout</button>
+          <span className="user-pill">
+            <span className="nav-avatar" aria-hidden="true">{(user?.name || '?').replace(/^dr\.?\s*/i, '').trim().charAt(0).toUpperCase()}</span>{' '}
+            {user?.name} · {user?.role}
+          </span>
+          <button className="btn-logout" onClick={handleLogout}>Log out</button>
         </div>
       </div>
     </nav>

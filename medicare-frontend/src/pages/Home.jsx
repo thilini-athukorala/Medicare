@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import api from '../api';
+import HeroSlider from '../components/HeroSlider';
 
 const SPECIALTIES = ['Cardiology', 'Dermatology', 'Pediatrics', 'Orthopedics', 'Neurology', 'General Physician'];
 
@@ -48,28 +49,7 @@ export default function Home() {
 
   return (
     <div>
-      <section className="banner">
-        <div className="banner-pattern" aria-hidden="true">
-          {Array.from({ length: 14 }).map((_, i) => (
-            <svg key={i} viewBox="0 0 100 100" className="hex">
-              <polygon points="50,3 93,25 93,75 50,97 7,75 7,25" />
-            </svg>
-          ))}
-        </div>
-        <div className="banner-copy">
-          <span className="banner-eyebrow">MediCare Appointment System</span>
-          <h1>
-            {`Welcome back, ${user.role === 'DOCTOR' ? user.name : user.name.split(' ')[0]}.`}
-          </h1>
-          <p>
-            {{
-              PATIENT: 'Find the right doctor and book your visit in under a minute.',
-              DOCTOR: 'Keep your available dates up to date and look after your appointments.',
-              ADMIN: 'Manage your doctors and keep every appointment on track.'
-            }[user.role]}
-          </p>
-        </div>
-      </section>
+      <HeroSlider />
 
       {user.role === 'PATIENT' && (
         <section className="search-card-wrap">
